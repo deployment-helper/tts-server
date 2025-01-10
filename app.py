@@ -1,3 +1,4 @@
+import base64
 import logging
 import io
 from TTS.utils.synthesizer import Synthesizer
@@ -45,13 +46,22 @@ def api_models():
 def api_synthesize():
     data = request.get_json()
     text = data['text']
+    send_as_file = data.get('send_as_file', False)
     speaker = data.get('speaker', None)
     language = data.get('language', None)
     logging.log(logging.INFO, f"Synthesizing: {text}")
     wavs = synthesizer.tts(text, language_name=language, speaker_name=speaker)
     out = io.BytesIO()
     synthesizer.save_wav(wavs, out)
-    return send_file(out, mimetype="audio/wav")
+    if send_as_file:
+        out.seek(0)
+        return send_file(out, mimetype="audio/wav")
+    else:
+        # return as base64
+        out.seek(0)
+        audio_content = base64.b64encode(out.getvalue()).decode('utf-8')
+        logging.log(logging.INFO, f"Synthesized: {audio_content}")
+        return jsonify({"audioContent": audio_content})
 # Main entry point
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)

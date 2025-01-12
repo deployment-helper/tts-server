@@ -87,7 +87,6 @@ def api_synthesize():
         else:
             out.seek(0)
             audio_content = base64.b64encode(out.getvalue()).decode('utf-8')
-            logging.log(logging.INFO, f"Synthesized: {audio_content}")
             return jsonify({"audioContent": audio_content})
     finally:
         if speaker_ref:

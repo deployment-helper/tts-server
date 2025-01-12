@@ -1,3 +1,5 @@
 Flask
-TTS
+coqui-tts
 torch
+boto3
+python-dotenv

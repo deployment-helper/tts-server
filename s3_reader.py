@@ -15,6 +15,7 @@ def read_file_from_s3(file_key, local_path):
     # Create an S3 client using the session
     s3 = session.client('s3')
     try:
+        logging.info(f"Reading file {file_key} from S3 bucket {S3_BUCKET_NAME}")
         response = s3.get_object(Bucket=S3_BUCKET_NAME, Key=file_key)
         file_content = response['Body'].read()
 

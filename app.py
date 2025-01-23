@@ -1,6 +1,7 @@
 import base64
 import logging
 import io
+import os
 import uuid
 from threading import Semaphore
 from dotenv import load_dotenv

@@ -4,3 +4,4 @@ torch
 boto3
 python-dotenv
 gunicorn
+pydub

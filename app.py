@@ -1,10 +1,10 @@
 import base64
 import logging
 import io
-import os
 import uuid
 from threading import Semaphore
 from dotenv import load_dotenv
+from pydub import AudioSegment
 
 from flask import Flask, render_template, request, send_file, jsonify
 
@@ -82,12 +82,18 @@ def api_synthesize():
 
         out = io.BytesIO()
         synthesizer.save_wav(wavs, out)
+        out.seek(0)
+
+        # Convert wav to mp3
+        audio = AudioSegment.from_wav(out)
+        out_mp3 = io.BytesIO()
+        audio.export(out_mp3, format="mp3")
+        out_mp3.seek(0)
+
         if send_as_file:
-            out.seek(0)
-            return send_file(out, mimetype="audio/wav")
+            return send_file(out_mp3, mimetype="audio/mpeg")
         else:
-            out.seek(0)
-            audio_content = base64.b64encode(out.getvalue()).decode('utf-8')
+            audio_content = base64.b64encode(out_mp3.getvalue()).decode('utf-8')
             return jsonify({"audioContent": audio_content})
     finally:
         if speaker_ref:

@@ -1,18 +1,19 @@
 # tts-server
+
 Text to speech server
 
+## Run production server
 
-
-## Run production server 
 ```bash
 gunicorn --bind 0.0.0.0:8080 --config gunicorn.conf.py  -w 4 --threads 10 app:app
 ```
 
 ## Update HTTP server(node.js)
-Need add environment variable 
-`TTS_SERVER_URL=http://127.0.0.1:8080` 
 
-# How to run production server 
+Need add environment variable
+`TTS_SERVER_URL=http://127.0.0.1:8080`
+
+# How to run production server
 
 To run a Gunicorn server in a tmux session and expose it to the public using ngrok, follow these steps:
 
@@ -36,17 +37,18 @@ This opens a new tmux session named gunicorn_server.
 
 3. Run Gunicorn
 
-Start the Gunicorn server inside the tmux session. Replace my_app:app with the correct module and application object for your project.
+Start the Gunicorn server inside the tmux session. Replace my_app:app with the correct module and application object for
+your project.
 
 Example:
 
 Set environment variables in this session:
 
-`caffeinate -dims &  gunicorn -w 4 -b 127.0.0.1:8080 my_app:app`
+`caffeinate -dims & gunicorn -w 4 -b 127.0.0.1:8070 app:app`
 
 This starts Gunicorn with:
-	•	-w 4: 4 worker processes.
-	•	-b 127.0.0.1:8080: Binds the server to localhost on port 8080.
+• -w 4: 4 worker processes.
+• -b 127.0.0.1:8080: Binds the server to localhost on port 8080.
 
 You can test your Gunicorn server locally:
 
@@ -68,7 +70,7 @@ Now, start ngrok to expose the Gunicorn server to the public:
 
 This will generate a public URL like:
 
-Forwarding                    https://<random-id>.ngrok.io -> http://127.0.0.1:8080
+Forwarding https://<random-id>.ngrok.io -> http://127.0.0.1:8080
 
 You can share this public URL, and ngrok will forward the traffic to your Gunicorn server.
 
@@ -83,26 +85,23 @@ If you need to return to the Gunicorn tmux session to view logs or stop the serv
 If you prefer to run both Gunicorn and ngrok in the same or separate tmux sessions:
 
 In the Same Session:
-	1.	Open a tmux session:
+1. Open a tmux session:
 
 `tmux new -s my_services`
-
 
 	2.	Run Gunicorn:
 
 `gunicorn -w 4 -b 127.0.0.1:8080 my_app:app`
 
-
 	3.	Split the tmux window:
+
 Press Ctrl + B, then % (splits the window vertically).
-	4.	Run ngrok in the new pane:
+4. Run ngrok in the new pane:
 
 `ngrok http 8080`
 
-
-
 In Separate Sessions:
-	1.	Start a session for Gunicorn:
+1. Start a session for Gunicorn:
 
 tmux new -s gunicorn_server
 
@@ -114,4 +113,5 @@ tmux new -s ngrok
 
 Run ngrok, then detach.
 
-This setup ensures both your Gunicorn server and ngrok are running in the background and accessible anytime! Let me know if you face any issues.
+This setup ensures both your Gunicorn server and ngrok are running in the background and accessible anytime! Let me know
+if you face any issues.

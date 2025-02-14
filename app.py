@@ -66,7 +66,10 @@ def api_synthesize():
     # Speaker_ref is S3 key path to clone the voice of this speaker.
     speaker_ref = data.get('speaker_ref', None)
     logging.log(logging.INFO, f"Synthesizing: {text}")
-
+    logging.log(logging.INFO, f"Speaker: {speaker}")
+    logging.log(logging.INFO, f"Language: {language}")
+    logging.log(logging.INFO, f"Speaker Ref: {speaker_ref}")
+    
     if speaker_ref:
         # Download the speaker reference file from S3
         speaker_ref_file = f"{TEMP_PATH}/{uuid.uuid4()}.wav"
